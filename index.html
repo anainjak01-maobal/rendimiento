@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Rendimiento académico · grado 10° (simulado)</title>
+<link rel="stylesheet" href="app.css?v=1"/>
+</head>
+<body>
+
+<div class="aviso-sim" role="note">Datos simulados para práctica. No son notas reales de ninguna institución.</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Análisis de rendimiento académico · grado 10°</p>
+    <h1>¿Qué materia necesita atención <em>primero</em>?</h1>
+    <p class="lead">Notas de 28 estudiantes de un grupo, en un periodo. La nota para pasar es 3,0. El promedio del grupo no dice quién se queda atrás: por eso miramos también cuántos quedan bajo 3,0.</p>
+    <nav class="acciones" aria-label="Secciones">
+      <a class="btn primario" href="#materias">Ver materias</a>
+      <a class="btn" href="#faltas">Faltas y matemáticas</a>
+      <a class="btn" href="#metodo">Cómo lo calculamos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="bloque" aria-labelledby="t-kpi">
+    <h2 id="t-kpi" class="sr">Cifras clave</h2>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <section class="bloque" id="materias" aria-labelledby="t-materias">
+    <div class="encabezado">
+      <h2 id="t-materias">Promedio por materia</h2>
+      <p>El punto muestra el promedio. La línea marca 3,0. Una materia puede promediar bien y aun así tener estudiantes por debajo.</p>
+    </div>
+    <div class="panel"><div id="grafico-materias"></div><p class="texto" style="margin-top:8px">Línea discontinua roja: nota para pasar (3,0).</p></div>
+    <div class="encabezado" style="margin-top:28px">
+      <h3 class="subtitulo">Cuántos estudiantes están bajo 3,0</h3>
+    </div>
+    <div class="panel"><div id="grafico-bajo"></div></div>
+    <p class="texto" id="texto-materias"></p>
+  </section>
+
+  <section class="bloque" id="faltas" aria-labelledby="t-faltas">
+    <div class="encabezado">
+      <h2 id="t-faltas">Faltas y matemáticas</h2>
+      <p>Cada punto es un estudiante. No se muestran nombres ni códigos.</p>
+    </div>
+    <div class="panel"><div id="grafico-faltas"></div></div>
+    <p class="texto" id="texto-faltas"></p>
+  </section>
+
+  <section class="bloque" id="cruce" aria-labelledby="t-cruce">
+    <div class="encabezado">
+      <h2 id="t-cruce">Matemáticas e inglés juntos</h2>
+      <p>¿Quiénes pierden matemáticas también están en riesgo en inglés?</p>
+    </div>
+    <div class="panel" id="texto-cruce"></div>
+  </section>
+
+  <section class="bloque" id="metodo" aria-labelledby="t-metodo">
+    <div class="encabezado">
+      <h2 id="t-metodo">Cómo lo calculamos y qué no se puede decir</h2>
+    </div>
+    <div class="panel">
+      <ul class="limites">
+        <li><strong>Promedio</strong>: suma de las notas dividida entre el número de notas. Hay 140 notas: 28 estudiantes por 5 materias.</li>
+        <li><strong>Bajo 3,0</strong>: nota menor que 3,0 en una materia.</li>
+        <li><strong>Asociación</strong>: la correlación entre faltas y nota de matemáticas es fuerte y negativa (r = −0,88). Eso es una asociación, no una causa. No medimos docente, método ni otros factores.</li>
+        <li><strong>Alcance</strong>: un grupo, un periodo, 28 estudiantes. No es todo el colegio ni se puede generalizar.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="pie">Datos simulados para práctica. Ningún estudiante aparece por nombre o código. Esta página no es un informe oficial.</footer>
+</main>
+
+<script src="datos.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+ANÁLISIS DE RENDIMIENTO ACADÉMICO · APP WEB (DATOS SIMULADOS)
+
+Archivos: index.html, app.css, app.js, datos.js
+- datos.js contiene los 28 registros del Excel del equipo (sin nombres ni códigos).
+- Para cambiar datos: reemplaza el arreglo de datos.js con el mismo formato.
+- Para publicar: sube estos cuatro archivos a un repositorio de GitHub y activa GitHub Pages.
+- Todas las cifras se calculan en app.js; no hay que escribirlas a mano.
+
+Advertencia: los datos son simulados para práctica. La página lo dice en cada pantalla.
