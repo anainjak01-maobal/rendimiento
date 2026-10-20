@@ -204,8 +204,7 @@
 
   /* ---------- Ingreso de notas ---------- */
   function prepararNotas() {
-    var grados = unicos(datos.map(function (d) { return d.grado; })).sort(function (a, b) { return a - b; });
-    if (!grados.length) grados = [6, 7, 8, 9, 10, 11];
+    var grados = [6, 7, 8, 9, 10, 11];
     $("n-grado").innerHTML = grados.map(function (g) { return '<option value="' + g + '">' + g + "°</option>"; }).join("");
     if (filtros.grado) $("n-grado").value = filtros.grado;
     if (!$("n-periodo").value) $("n-periodo").value = filtros.periodo || "";
