@@ -3,81 +3,116 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Rendimiento académico · grado 10°</title>
+<title>Rendimiento académico · registro y panel</title>
 <link rel="stylesheet" href="app.css?v=1"/>
 </head>
 <body>
 
-<div class="aviso-sim" role="note">Datos reales de una muestra: un grupo de grado 10°, un periodo. Sin nombres ni códigos.</div>
-
-<header class="hero">
-  <div class="wrap">
-    <p class="kicker">Análisis de rendimiento académico · grado 10°</p>
-    <h1>¿Qué materia necesita atención <em>primero</em>?</h1>
-    <p class="lead">Notas de 28 estudiantes de un grupo, en un periodo. Es una muestra, no todo el colegio. La nota para pasar es 3,0. El promedio del grupo no dice quién se queda atrás: por eso miramos también cuántos quedan bajo 3,0.</p>
-    <nav class="acciones" aria-label="Secciones">
-      <a class="btn primario" href="#materias">Ver materias</a>
-      <a class="btn" href="#faltas">Faltas y matemáticas</a>
-      <a class="btn" href="#metodo">Cómo lo calculamos</a>
-    </nav>
+<header class="cabecera wrap">
+  <p class="kicker">Rendimiento académico · uso interno</p>
+  <h1 id="titulo">Entrar</h1>
+  <p class="muted" id="subtitulo">Datos reales de menores de edad. Solo para el equipo y los docentes con clave.</p>
+  <div class="acciones" id="barra" hidden>
+    <button class="btn" type="button" data-vista="panel">Panel</button>
+    <button class="btn" type="button" data-vista="notas">Ingresar notas</button>
+    <button class="btn" type="button" id="salir">Salir</button>
   </div>
 </header>
 
 <main class="wrap">
 
-  <section class="bloque" aria-labelledby="t-kpi">
-    <h2 id="t-kpi" class="sr">Cifras clave</h2>
+  <section id="acceso" class="panel acceso">
+    <form id="acc-form" autocomplete="off">
+      <label class="campo">Clave del equipo o del docente
+        <input type="password" id="clave" required/>
+      </label>
+      <div class="acciones">
+        <button class="btn primario" type="submit" id="acc-btn">Entrar</button>
+        <span class="msg" id="acc-msg" role="alert"></span>
+      </div>
+    </form>
+    <p class="muted small">La clave no se guarda en el navegador: hay que escribirla cada vez que se abre la página.</p>
+  </section>
+
+  <section id="vista-panel" hidden>
+    <div class="filtros panel">
+      <label class="campo">Grado
+        <select id="f-grado"></select>
+      </label>
+      <label class="campo">Periodo
+        <select id="f-periodo"></select>
+      </label>
+      <label class="campo">Grupo
+        <select id="f-grupo"></select>
+      </label>
+    </div>
+    <p class="msg" id="panel-msg"></p>
+
     <div class="kpis" id="kpis"></div>
+
+    <section class="bloque">
+      <div class="encabezado"><h2>Promedio por materia y rango probable</h2>
+        <p>La barra es el promedio. La línea vertical muestra el rango probable del 95 % (remuestreo). Línea roja: nota para pasar, 3,0.</p></div>
+      <div class="panel"><div id="g-materias"></div></div>
+    </section>
+
+    <section class="bloque">
+      <div class="encabezado"><h2>Distribución de notas de matemáticas</h2>
+        <p>Cuántos estudiantes caen en cada tramo.</p></div>
+      <div class="panel"><div id="g-distribucion"></div></div>
+    </section>
+
+    <section class="bloque">
+      <div class="encabezado"><h2>Faltas y matemáticas</h2>
+        <p id="r-texto"></p></div>
+      <div class="panel"><div id="g-faltas"></div></div>
+    </section>
+
+    <section class="bloque">
+      <div class="encabezado"><h2>Matemáticas por grupo</h2>
+        <p>Compara los grupos del grado en el periodo elegido. Con pocos estudiantes, cada barra es una pista.</p></div>
+      <div class="panel"><div id="g-grupos"></div></div>
+    </section>
+
+    <section class="bloque">
+      <div class="encabezado"><h2>Estudiantes del grupo</h2>
+        <p>Solo para el equipo. Se muestran códigos y notas, nunca nombres.</p></div>
+      <div class="tabla-wrap"><table class="tabla"><thead><tr><th>Código</th><th class="n">Mat.</th><th class="n">Inglés</th><th class="n">C. nat.</th><th class="n">Soc.</th><th class="n">E. fís.</th><th class="n">Promedio</th><th class="n">Faltas</th></tr></thead><tbody id="tbody-panel"></tbody></table></div>
+    </section>
   </section>
 
-  <section class="bloque" id="materias" aria-labelledby="t-materias">
-    <div class="encabezado">
-      <h2 id="t-materias">Promedio por materia</h2>
-      <p>El punto muestra el promedio. La línea marca 3,0. Una materia puede promediar bien y aun así tener estudiantes por debajo.</p>
+  <section id="vista-notas" hidden>
+    <div class="panel filtros">
+      <label class="campo">Grado
+        <select id="n-grado"></select>
+      </label>
+      <label class="campo">Grupo
+        <input type="text" id="n-grupo" maxlength="20" placeholder="Ej. Grupo 1"/>
+      </label>
+      <label class="campo">Periodo
+        <input type="text" id="n-periodo" maxlength="12" placeholder="Ej. 2026-2"/>
+      </label>
+      <div class="acciones"><button class="btn" type="button" id="n-cargar">Cargar este grupo</button></div>
     </div>
-    <div class="panel"><div id="grafico-materias"></div><p class="texto" style="margin-top:8px">Línea discontinua roja: nota para pasar (3,0).</p></div>
-    <div class="encabezado" style="margin-top:28px">
-      <h3 class="subtitulo">Cuántos estudiantes están bajo 3,0</h3>
+    <p class="muted small">Escribe solo el código de cada estudiante (de 2 a 8 letras o números). Nunca el nombre. Las notas van de 0 a 5.</p>
+    <div class="tabla-wrap">
+      <table class="tabla tabla-notas">
+        <thead><tr><th>Código</th><th>Matemáticas</th><th>Inglés</th><th>C. nat.</th><th>Sociales</th><th>E. física</th><th>Faltas</th><th></th></tr></thead>
+        <tbody id="tbody-notas"></tbody>
+      </table>
     </div>
-    <div class="panel"><div id="grafico-bajo"></div></div>
-    <p class="texto" id="texto-materias"></p>
-  </section>
-
-  <section class="bloque" id="faltas" aria-labelledby="t-faltas">
-    <div class="encabezado">
-      <h2 id="t-faltas">Faltas y matemáticas</h2>
-      <p>Cada punto es un estudiante. No se muestran nombres ni códigos.</p>
-    </div>
-    <div class="panel"><div id="grafico-faltas"></div></div>
-    <p class="texto" id="texto-faltas"></p>
-  </section>
-
-  <section class="bloque" id="cruce" aria-labelledby="t-cruce">
-    <div class="encabezado">
-      <h2 id="t-cruce">Matemáticas e inglés juntos</h2>
-      <p>¿Quiénes pierden matemáticas también están en riesgo en inglés?</p>
-    </div>
-    <div class="panel" id="texto-cruce"></div>
-  </section>
-
-  <section class="bloque" id="metodo" aria-labelledby="t-metodo">
-    <div class="encabezado">
-      <h2 id="t-metodo">Cómo lo calculamos y qué no se puede decir</h2>
-    </div>
-    <div class="panel">
-      <ul class="limites">
-        <li><strong>Promedio</strong>: suma de las notas dividida entre el número de notas. Hay 140 notas: 28 estudiantes por 5 materias.</li>
-        <li><strong>Bajo 3,0</strong>: nota menor que 3,0 en una materia.</li>
-        <li><strong>Asociación</strong>: la correlación entre faltas y nota de matemáticas es fuerte y negativa (r = −0,88). Eso es una asociación, no una causa. No medimos docente, método ni otros factores.</li>
-        <li><strong>Alcance</strong>: un grupo, un periodo, 28 estudiantes. No es todo el colegio ni se puede generalizar.</li>
-      </ul>
+    <div class="acciones">
+      <button class="btn" type="button" id="n-agregar">Agregar estudiante</button>
+      <button class="btn primario" type="button" id="n-guardar">Guardar notas</button>
+      <span class="msg" id="n-msg" role="status"></span>
     </div>
   </section>
 
-  <footer class="pie">Datos reales de una muestra: un grupo de grado 10°, un periodo. Ningún estudiante aparece por nombre o código. Esta página no es un informe oficial.</footer>
 </main>
 
-<script src="datos.js?v=1"></script>
+<footer class="wrap pie">Datos reales de menores de edad. No compartir fuera del equipo. No se publican nombres ni códigos con notas.</footer>
+
+<script src="config.js?v=1"></script>
 <script src="app.js?v=1"></script>
 </body>
 </html>

@@ -1,9 +1,30 @@
-ANÁLISIS DE RENDIMIENTO ACADÉMICO · APP WEB (MUESTRA DE UN GRUPO)
+REGISTRO Y PANEL DE NOTAS POR GRUPO · GRADOS 6° A 11° (USO INTERNO)
 
-Archivos: index.html, app.css, app.js, datos.js
-- datos.js contiene los 28 registros del Excel del equipo (sin nombres ni códigos).
-- Para cambiar datos: reemplaza el arreglo de datos.js con el mismo formato.
-- Para publicar: sube estos cuatro archivos a un repositorio de GitHub y activa GitHub Pages.
-- Todas las cifras se calculan en app.js; no hay que escribirlas a mano.
+QUÉ CONTIENE
+- index.html, app.css, app.js, config.js: la página (entrada con clave, panel del equipo, ingreso de notas).
+- apps-script/Codigo.gs: el servicio que guarda y lee la hoja de Google.
+- apps-script/notas_inicial.csv: las 28 filas del grado 10 con códigos nuevos al azar.
 
-Advertencia: son datos reales de menores de edad, una muestra de un grupo y un periodo. Sin nombres ni códigos. Publicar solo con autorización escrita de coordinación.
+PASOS
+1. Crea una hoja de Google nueva. Ponle un nombre como "Notas rendimiento".
+2. Extensiones > Apps Script. Borra lo que haya y pega el contenido de Codigo.gs.
+3. Cambia CLAVE por la clave compartida (equipo y docentes). Guárdala.
+4. Implementar > Nueva implementación > Aplicación web.
+   - Ejecutar como: Yo.
+   - Quién tiene acceso: Cualquier persona (la clave protege los datos).
+   - Copia la dirección que termina en /exec.
+5. Abre config.js y pega la dirección entre las comillas de REGISTRO.
+6. Importa notas_inicial.csv en la hoja: Archivo > Importar > Subir. En "Ubicación" elige "Reemplazar la hoja" o "Insertar nueva hoja" y renómbrala "Notas". Debe quedar una sola hoja llamada "Notas" con los títulos en la fila 1.
+7. Sube a GitHub los archivos index.html, app.css, app.js y config.js.
+
+CÓMO LO USA CADA PERSONA
+- Equipo: entra con la clave y ve el panel. Elige grado, periodo y grupo.
+- Docente: entra con la clave, va a "Ingresar notas", escribe grado, grupo y periodo, y carga las filas.
+  Cada estudiante se escribe solo con código (de 2 a 8 letras o números). Nunca el nombre.
+
+PRIVACIDAD
+- No escribas nombres en la hoja ni en la página. Los códigos deben asignarse al azar.
+- La clave está en Codigo.gs. Si alguien deja de participar, cambia la clave y crea una versión nueva.
+- Antes de cargar datos de otros grupos, la coordinación debe aprobarlo por escrito.
+
+Después de cambiar Codigo.gs: Implementar > Administrar implementaciones > Versión nueva. La dirección /exec no cambia.
