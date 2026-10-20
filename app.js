@@ -214,7 +214,7 @@
   function fila(d) {
     d = d || {};
     var celdas = ["mat", "ing", "cn", "soc", "ef"].map(function (k) { return '<td><input type="number" min="0" max="5" step="0.1" inputmode="decimal" data-k="' + k + '" value="' + (d[k] == null ? "" : d[k]) + '"/></td>'; }).join("");
-    return '<tr' + (d.id ? ' data-id="' + esc(d.id) + '"' : "") + '><td><input type="text" data-k="codigo" maxlength="8" value="' + esc(d.codigo || "") + '"/></td>' + celdas +
+    return '<tr' + (d.id ? ' data-id="' + esc(d.id) + '"' : "") + '><td><input type="text" data-k="nombre" maxlength="60" placeholder="Nombre (solo docentes)" value="' + esc(d.nombre || "") + '"/></td><td><input type="text" data-k="codigo" maxlength="8" value="' + esc(d.codigo || "") + '"/></td>' + celdas +
       '<td><input type="number" class="fal" min="0" max="60" step="1" data-k="faltas" value="' + (d.faltas == null ? "" : d.faltas) + '"/></td><td><button class="btn pequeno peligro" type="button">Quitar</button></td></tr>';
   }
   function cargarNotas() {
@@ -222,6 +222,13 @@
     var rs = datos.filter(function (d) { return String(d.grado) === g && d.periodo === p && d.grupo === gr; });
     $("tbody-notas").innerHTML = rs.length ? rs.map(fila).join("") : fila();
     msg($("n-msg"), rs.length ? rs.length + " estudiantes en este grupo. Puedes corregir y guardar." : "Grupo nuevo: agrega estudiantes y guarda.", "");
+    if (!rs.length) return;
+    enviar("nombres", { grado: g, grupo: gr, periodo: p }).then(function (r) {
+      if (!r.ok) return;
+      var mapa = {};
+      (r.datos || []).forEach(function (x) { mapa[x.codigo] = x.nombre; });
+      $("tbody-notas").innerHTML = rs.map(function (d) { d.nombre = mapa[d.codigo] || ""; return fila(d); }).join("");
+    });
   }
   $("n-cargar").addEventListener("click", cargarNotas);
   ["n-grado", "n-grupo", "n-periodo"].forEach(function (id) { $(id).addEventListener("change", cargarNotas); });
@@ -242,7 +249,7 @@
     for (var i = 0; i < trs.length; i++) {
       var inp = trs[i].querySelectorAll("input"), o = { grado: g, grupo: gr, periodo: p };
       inp.forEach(function (x) { o[x.dataset.k] = x.value.trim(); });
-      if (!o.codigo && !o.mat && !o.ing && !o.cn && !o.soc && !o.ef && !o.faltas) continue;
+      if (!o.codigo && !o.nombre && !o.mat && !o.ing && !o.cn && !o.soc && !o.ef && !o.faltas) continue;
       filas.push(o);
     }
     if (!filas.length) { msg($("n-msg"), "No hay filas para guardar.", "error"); return; }
