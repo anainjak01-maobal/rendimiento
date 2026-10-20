@@ -95,16 +95,16 @@
       <div class="acciones"><button class="btn" type="button" id="n-cargar">Cargar este grupo</button></div>
     </div>
     <p class="muted small">El nombre solo lo ven quienes ingresan notas; el panel del equipo muestra únicamente el código. El código va de 2 a 8 letras o números. Las notas van de 0 a 5.</p>
+    <div class="acciones">
+      <button class="btn" type="button" id="n-agregar">Agregar estudiante</button>
+      <button class="btn primario" type="button" id="n-guardar">Guardar notas</button>
+      <span class="msg" id="n-msg" role="status"></span>
+    </div>
     <div class="tabla-wrap">
       <table class="tabla tabla-notas">
         <thead><tr><th>Nombre</th><th>Código</th><th>Matemáticas</th><th>Inglés</th><th>C. nat.</th><th>Sociales</th><th>E. física</th><th>Faltas</th><th></th></tr></thead>
         <tbody id="tbody-notas"></tbody>
       </table>
-    </div>
-    <div class="acciones">
-      <button class="btn" type="button" id="n-agregar">Agregar estudiante</button>
-      <button class="btn primario" type="button" id="n-guardar">Guardar notas</button>
-      <span class="msg" id="n-msg" role="status"></span>
     </div>
   </section>
 
@@ -113,6 +113,6 @@
 <footer class="wrap pie">Datos reales de menores de edad. No compartir fuera del equipo. No se publican nombres ni códigos con notas.</footer>
 
 <script src="config.js?v=2"></script>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
