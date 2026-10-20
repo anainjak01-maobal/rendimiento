@@ -232,7 +232,12 @@
   }
   $("n-cargar").addEventListener("click", cargarNotas);
   ["n-grado", "n-grupo", "n-periodo"].forEach(function (id) { $(id).addEventListener("change", cargarNotas); });
-  $("n-agregar").addEventListener("click", function () { $("tbody-notas").insertAdjacentHTML("beforeend", fila()); });
+  $("n-agregar").addEventListener("click", function () {
+    var tb = $("tbody-notas");
+    tb.insertAdjacentHTML("afterbegin", fila());
+    var primera = tb.querySelector("tr input[data-k='nombre']");
+    if (primera) primera.focus();
+  });
   $("tbody-notas").addEventListener("click", function (e) {
     if (!e.target.matches("button")) return;
     var tr = e.target.closest("tr"), id = tr.dataset.id;
