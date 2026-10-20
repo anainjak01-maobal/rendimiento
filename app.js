@@ -278,3 +278,16 @@
   mostrar("acceso");
   if (!CFG.REGISTRO) msg($("acc-msg"), "Falta REGISTRO en config.js: pega la dirección /exec (ver LEEME.txt).", "error");
 })();
+
+/* Carrusel del banner: cambia cada 6 s; se detiene si el usuario pide menos movimiento. */
+(function () {
+  var diapos = document.querySelectorAll(".diapo"), puntos = document.querySelectorAll(".punto");
+  if (diapos.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var i = 0;
+  setInterval(function () {
+    diapos[i].classList.remove("activo"); puntos[i].classList.remove("activo");
+    i = (i + 1) % diapos.length;
+    diapos[i].classList.add("activo"); puntos[i].classList.add("activo");
+  }, 6000);
+})();
+

@@ -20,10 +20,10 @@ PASOS
 CÓMO LO USA CADA PERSONA
 - Equipo: entra con la clave y ve el panel. Elige grado, periodo y grupo.
 - Docente: entra con la clave, va a "Ingresar notas", escribe grado, grupo y periodo, y carga las filas.
-  Cada estudiante se escribe solo con código (de 2 a 8 letras o números). Nunca el nombre.
+  Cada estudiante tiene un código (de 2 a 8 letras o números) y un nombre. El nombre lo escribe solo el docente y no aparece en el panel del equipo.
 
 PRIVACIDAD
-- No escribas nombres en la hoja ni en la página. Los códigos deben asignarse al azar.
+- Los nombres solo los escriben los docentes en el ingreso de notas. Los códigos deben asignarse al azar. Tener autorización escrita del coordinador antes de guardar nombres.
 - La clave está en Codigo.gs. Si alguien deja de participar, cambia la clave y crea una versión nueva.
 - Antes de cargar datos de otros grupos, la coordinación debe aprobarlo por escrito.
 

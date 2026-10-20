@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Rendimiento académico · registro y panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="stylesheet" href="app.css?v=3"/>
+<link rel="stylesheet" href="app.css?v=4"/>
 </head>
 <body>
 
@@ -19,6 +19,15 @@
     <button class="btn" type="button" id="salir">Salir</button>
   </div>
 </header>
+
+<section class="banner" aria-label="Portada">
+  <div class="diapos">
+    <div class="diapo activo" style="--img:url('img/banner1.jpg')"><div class="velo"><p>Analítica para decidir mejor</p></div></div>
+    <div class="diapo" style="--img:url('img/banner2.jpg')"><div class="velo"><p>Datos reales, uso interno</p></div></div>
+    <div class="diapo" style="--img:url('img/banner3.jpg')"><div class="velo"><p>Del registro al análisis</p></div></div>
+  </div>
+  <div class="puntos" aria-hidden="true"><span class="punto activo"></span><span class="punto"></span><span class="punto"></span></div>
+</section>
 
 <main class="wrap">
 
@@ -114,6 +123,6 @@
 <footer class="wrap pie">Datos reales de menores de edad. No compartir fuera del equipo. No se publican nombres ni códigos con notas.</footer>
 
 <script src="config.js?v=2"></script>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
