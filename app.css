@@ -1,5 +1,6 @@
 :root { --bg:#f5f3ee; --card:#fff; --fg:#1d2a33; --ink2:#56636b; --rule:#dcd7cc; --accent:#b5563b; --accent-ink:#9a4129; --sea:#2f6f5e; --ease:cubic-bezier(.2,.8,.2,1); }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 "Segoe UI", system-ui, sans-serif; }
 .wrap { max-width:1180px; margin:0 auto; padding:0 16px; }
 .muted { color:var(--ink2); } .small { font-size:13px; } .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
@@ -45,3 +46,5 @@ svg .etiq { font-size:14px; font-weight:700; }
 @keyframes aparece { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 @media (max-width:600px) { .filtros .campo { min-width:0; flex:1 1 140px; } }
+
+.msg.error { display:block; margin-top:6px; }
