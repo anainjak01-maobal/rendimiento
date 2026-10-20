@@ -78,6 +78,8 @@
     var periodos = unicos(datos.map(function (d) { return d.periodo; })).sort();
     if (!filtros.grado && grados.length) filtros.grado = String(grados[grados.length - 1]);
     if (!filtros.periodo && periodos.length) filtros.periodo = periodos[periodos.length - 1];
+    var delGrado = unicos(datos.filter(function (d) { return String(d.grado) === filtros.grado; }).map(function (d) { return d.periodo; })).sort();
+    if (delGrado.length && delGrado.indexOf(filtros.periodo) < 0) filtros.periodo = delGrado[delGrado.length - 1];
     $("f-grado").innerHTML = grados.map(function (g) { return '<option value="' + g + '"' + (String(g) === filtros.grado ? " selected" : "") + ">" + g + "°</option>"; }).join("");
     $("f-periodo").innerHTML = periodos.map(function (p) { return '<option' + (p === filtros.periodo ? " selected" : "") + ">" + esc(p) + "</option>"; }).join("");
     var grupos = unicos(datos.filter(function (d) { return String(d.grado) === filtros.grado && d.periodo === filtros.periodo; }).map(function (d) { return d.grupo; })).sort();
@@ -125,18 +127,18 @@
     var W = 900, H = 360, L = 60, R = 20, T = 20, B = 60, y0 = 2, y1 = 5;
     var sy = function (v) { return T + (H - T - B) * (1 - (v - y0) / (y1 - y0)); };
     var bw = (W - L - R) / NOTAS.length, out = "";
-    for (var g = 2; g <= 5; g += 0.5) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g) + '" y2="' + sy(g) + '" stroke="#dcd7cc"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g) + 4) + '" text-anchor="end">' + f2(g) + "</text>";
+    for (var g = 2; g <= 5; g += 0.5) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g) + '" y2="' + sy(g) + '" stroke="#264852"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g) + 4) + '" text-anchor="end">' + f2(g) + "</text>";
     NOTAS.forEach(function (n, i) {
       var v = rs.map(function (d) { return d[n.k]; }).filter(function (x) { return x != null; });
       var m = media(v), cx = L + bw * i + bw / 2, bwid = bw * 0.45;
       if (m == null) return;
       var ci = ic95(v, 20261020 + i);
-      out += '<rect class="barra" x="' + (cx - bwid / 2) + '" y="' + sy(m) + '" width="' + bwid + '" height="' + (sy(y0) - sy(m)) + '" fill="' + (m < PASAR ? "#9a4129" : "#2f6f5e") + '" opacity=".85"><title>' + esc(n.n) + ": " + f2(m) + "</title></rect>";
-      if (ci) out += '<line x1="' + cx + '" x2="' + cx + '" y1="' + sy(ci[0]) + '" y2="' + sy(ci[1]) + '" stroke="#1d2a33" stroke-width="2"/><line x1="' + (cx - 8) + '" x2="' + (cx + 8) + '" y1="' + sy(ci[0]) + '" y2="' + sy(ci[0]) + '" stroke="#1d2a33" stroke-width="2"/><line x1="' + (cx - 8) + '" x2="' + (cx + 8) + '" y1="' + sy(ci[1]) + '" y2="' + sy(ci[1]) + '" stroke="#1d2a33" stroke-width="2"/>';
+      out += '<rect class="barra" x="' + (cx - bwid / 2) + '" y="' + sy(m) + '" width="' + bwid + '" height="' + (sy(y0) - sy(m)) + '" fill="' + (m < PASAR ? "#ef7a66" : "#55c2ab") + '" opacity=".85"><title>' + esc(n.n) + ": " + f2(m) + "</title></rect>";
+      if (ci) out += '<line x1="' + cx + '" x2="' + cx + '" y1="' + sy(ci[0]) + '" y2="' + sy(ci[1]) + '" stroke="#eaf2ef" stroke-width="2"/><line x1="' + (cx - 8) + '" x2="' + (cx + 8) + '" y1="' + sy(ci[0]) + '" y2="' + sy(ci[0]) + '" stroke="#eaf2ef" stroke-width="2"/><line x1="' + (cx - 8) + '" x2="' + (cx + 8) + '" y1="' + sy(ci[1]) + '" y2="' + sy(ci[1]) + '" stroke="#eaf2ef" stroke-width="2"/>';
       out += '<text class="etiq" x="' + (cx + bwid / 2 + 6) + '" y="' + (sy(m) - 6) + '">' + f2(m) + "</text>";
       out += '<text class="eje" x="' + cx + '" y="' + (H - 26) + '" text-anchor="middle">' + esc(n.n) + "</text>";
     });
-    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#b5563b" stroke-width="2" stroke-dasharray="6 5"/>';
+    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#f0bd5a" stroke-width="2" stroke-dasharray="6 5"/>';
     $("g-materias").innerHTML = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Promedio por materia">' + out + "</svg>";
   }
 
@@ -147,7 +149,7 @@
     var bw = (W - L - R) / tramos.length, out = "";
     tramos.forEach(function (t, i) {
       var h = (H - T - B) * cuentas[i] / max, x = L + bw * i + bw * 0.2, y = H - B - h, w = bw * 0.6;
-      out += '<rect class="barra" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + (i === 0 ? "#9a4129" : "#2f6f5e") + '" opacity=".85"/>';
+      out += '<rect class="barra" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + (i === 0 ? "#ef7a66" : "#55c2ab") + '" opacity=".85"/>';
       out += '<text class="etiq" x="' + (x + w / 2) + '" y="' + (y - 8) + '" text-anchor="middle">' + cuentas[i] + "</text>";
       out += '<text class="eje" x="' + (x + w / 2) + '" y="' + (H - 20) + '" text-anchor="middle">' + t[0] + "</text>";
     });
@@ -162,9 +164,9 @@
     var W = 900, H = 340, L = 60, R = 20, T = 20, B = 50, y0 = 2, y1 = 5;
     var sx = function (v) { return L + (W - L - R) * v / fmax; }, sy = function (v) { return T + (H - T - B) * (1 - (v - y0) / (y1 - y0)); };
     var out = "";
-    for (var g = 2; g <= 5; g++) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g) + '" y2="' + sy(g) + '" stroke="#dcd7cc"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g) + 4) + '" text-anchor="end">' + g + "</text>";
-    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#b5563b" stroke-width="2" stroke-dasharray="6 5"/>';
-    pts.forEach(function (d) { out += '<circle cx="' + sx(d.faltas) + '" cy="' + sy(d.mat) + '" r="6" fill="' + (d.mat < PASAR ? "#9a4129" : "#2f6f5e") + '" opacity=".85"><title>' + d.faltas + " faltas · matemáticas " + f2(d.mat) + "</title></circle>"; });
+    for (var g = 2; g <= 5; g++) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g) + '" y2="' + sy(g) + '" stroke="#264852"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g) + 4) + '" text-anchor="end">' + g + "</text>";
+    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#f0bd5a" stroke-width="2" stroke-dasharray="6 5"/>';
+    pts.forEach(function (d) { out += '<circle cx="' + sx(d.faltas) + '" cy="' + sy(d.mat) + '" r="6" fill="' + (d.mat < PASAR ? "#ef7a66" : "#55c2ab") + '" opacity=".85"><title>' + d.faltas + " faltas · matemáticas " + f2(d.mat) + "</title></circle>"; });
     out += '<text class="eje" x="' + (W / 2) + '" y="' + (H - 12) + '" text-anchor="middle">Faltas del periodo</text>';
     $("g-faltas").innerHTML = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Faltas y matemáticas">' + out + "</svg>";
     var conF = pts.filter(function (d) { return d.faltas >= 4; }), sinF = pts.filter(function (d) { return d.faltas < 4; });
@@ -180,15 +182,15 @@
     var W = 900, H = 280, L = 60, R = 20, T = 20, B = 50, y0 = 2, y1 = 5;
     var sy = function (v) { return T + (H - T - B) * (1 - (v - y0) / (y1 - y0)); };
     var bw = (W - L - R) / vals.length, out = "";
-    for (var g2 = 2; g2 <= 5; g2++) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g2) + '" y2="' + sy(g2) + '" stroke="#dcd7cc"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g2) + 4) + '" text-anchor="end">' + g2 + "</text>";
+    for (var g2 = 2; g2 <= 5; g2++) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(g2) + '" y2="' + sy(g2) + '" stroke="#264852"/><text class="eje" x="' + (L - 8) + '" y="' + (sy(g2) + 4) + '" text-anchor="end">' + g2 + "</text>";
     vals.forEach(function (v, i) {
       if (v.m == null) return;
       var cx = L + bw * i + bw / 2, bwid = Math.min(120, bw * 0.5);
-      out += '<rect class="barra" x="' + (cx - bwid / 2) + '" y="' + sy(v.m) + '" width="' + bwid + '" height="' + (sy(y0) - sy(v.m)) + '" fill="' + (v.g === filtros.grupo ? "#b5563b" : "#8a9aa2") + '"><title>' + esc(v.g) + ": " + f2(v.m) + "</title></rect>";
+      out += '<rect class="barra" x="' + (cx - bwid / 2) + '" y="' + sy(v.m) + '" width="' + bwid + '" height="' + (sy(y0) - sy(v.m)) + '" fill="' + (v.g === filtros.grupo ? "#f0bd5a" : "#5f7d87") + '"><title>' + esc(v.g) + ": " + f2(v.m) + "</title></rect>";
       out += '<text class="etiq" x="' + cx + '" y="' + (sy(v.m) - 6) + '" text-anchor="middle">' + f2(v.m) + "</text>";
       out += '<text class="eje" x="' + cx + '" y="' + (H - 20) + '" text-anchor="middle">' + esc(v.g) + "</text>";
     });
-    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#b5563b" stroke-width="2" stroke-dasharray="6 5"/>';
+    out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + sy(PASAR) + '" y2="' + sy(PASAR) + '" stroke="#f0bd5a" stroke-width="2" stroke-dasharray="6 5"/>';
     $("g-grupos").innerHTML = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Matemáticas por grupo">' + out + "</svg>";
   }
 
