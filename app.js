@@ -1,4 +1,4 @@
-/* Rendimiento académico · datos simulados. Calcula todo desde window.RA_DATOS. */
+/* Rendimiento académico · muestra de un grupo. Calcula todo desde window.RA_DATOS. */
 (function () {
   "use strict";
   var D = window.RA_DATOS || [];
